@@ -29,7 +29,7 @@ Links:
                     .WriteTo.Console(outputTemplate: "[{SourceContext}] {Message:lj}{NewLine}{Exception}")
                     .CreateLogger();
             // Assign new logger
-            SwitchableLogger.Instance.Set(newLogger, true);
+            SwitchableLogger.Instance.Set(newLogger, disposePrev: true);
 
             // Write with the previous logger instance, but with different settings
             logger.Information("Hello world again");
