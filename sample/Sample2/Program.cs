@@ -28,8 +28,6 @@ namespace Sample
 
             // Service collection
             IServiceCollection serviceCollection = new ServiceCollection()
-                .AddSingleton<IConfigurationRoot>(configuration)
-                .AddSingleton<IConfiguration>(configuration)
                 .AddLogging(loggingBuilder =>
                     loggingBuilder
                         .AddSerilog(SwitchableLogger.Instance, true)
