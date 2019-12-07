@@ -6,10 +6,10 @@ namespace SampleSimple
     {
         static void Main(string[] args)
         {
-            // Assign SerilogSwitch.Instance to Serilog.Log.Logger
+            // Assign SwitchableLogger.Instance to Serilog.Log.Logger
             Serilog.Log.Logger = SwitchableLogger.Instance;
 
-            // Assign logger to SerilogSwitch.Instance
+            // Assign logger to SwitchableLogger.Instance
             SwitchableLogger.Instance.Logger = new Serilog.LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj}{NewLine}{Exception}")
