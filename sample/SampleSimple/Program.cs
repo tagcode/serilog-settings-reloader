@@ -1,6 +1,4 @@
-﻿using System;
-using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
+﻿using Serilog;
 
 namespace SampleSimple
 {

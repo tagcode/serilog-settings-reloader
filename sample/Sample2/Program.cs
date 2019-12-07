@@ -1,13 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.IO;
-using System.Linq;
-using Serilog;
-using Serilog.Core;
-using Serilog.Events;
-using System.Collections.Generic;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace Sample
 {
