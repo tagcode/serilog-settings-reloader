@@ -2,11 +2,11 @@
 **Serilog.Settings.Reloader** provides completely reloadable settings for Serilog.
 
 Links:
- * Github ([Serilog.Settings.Reloader])(https://github.com/tagcode/serilog-settings-reloader)
- * Nuget ([Serilog.Settings.Reloader])(https://www.nuget.org/packages/Serilog.Settings.Reloader)
- * License ([Apache-2.0 license])(http://www.apache.org/licenses/LICENSE-2.0)
- 
-New configurations can be loaded into **SwitchableLogger**.
+ * Github ([Serilog.Settings.Reloader](https://github.com/tagcode/serilog-settings-reloader))
+ * Nuget ([Serilog.Settings.Reloader](https://www.nuget.org/packages/Serilog.Settings.Reloader))
+ * License ([Apache-2.0 license](http://www.apache.org/licenses/LICENSE-2.0))
+
+**SwitchableLogger** is assigned with new root *ILogger* when configuration is modified.
 ```C#
             // Assign SerilogSwitch.Instance to Serilog.Log.Logger
             Serilog.Log.Logger = SwitchableLogger.Instance;
@@ -34,6 +34,8 @@ New configurations can be loaded into **SwitchableLogger**.
             // Write with the previous logger instance, but with different settings
             logger.Information("Hello world again");
 ```
+
+<br/><br/>
 
 **.AddSerilogConfigurationLoader()** can be used with dependency injection's *ILoggingBuilder*.
 ```C#
