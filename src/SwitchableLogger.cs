@@ -81,7 +81,7 @@ namespace Serilog
 
         /// <summary>Function that gets current logger</summary>
         public ILogger GetCurrentLogger()
-            => logger ?? loggerProvider();
+            => logger ?? loggerProvider() ?? silent;
 
         /// <inheritdoc/>
         public ILogger ForContext(ILogEventEnricher enricher)
