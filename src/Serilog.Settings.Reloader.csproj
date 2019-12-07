@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RepositoryUrl>https://github.com/tagcode/serilog-settings-reloader</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <Authors>Toni Kalajainen</Authors>
+    <Company>Avalanche Information Technology Oy</Company>
+    <Copyright>Toni Kalajainen</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Description>Feature to completely reload serilog settings. Also contains switchable ILogger implementation.</Description>
+    <PackageTags>serilog serilog-settings serilog-settings-reloader</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RootNamespace>Serilog</RootNamespace>
+    <Version>2.0.9</Version>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.1.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.1.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="2.1.0" PrivateAssets="all" />
+
+    <PackageReference Include="Serilog" Version="2.6.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" PrivateAssets="all" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
