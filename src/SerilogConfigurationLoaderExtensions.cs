@@ -14,26 +14,34 @@ namespace Serilog
     /// <summary>
     /// Serilog ILoggingBuilder extension methods that add reload feature
     /// </summary>
-    public static class SerilogLoggerBuilderReloadExtensions
+    public static class SerilogConfigurationLoaderExtensions
     {
+        /// <summary>Default configuration loader function</summary>
+        static Func<IConfiguration, ILogger> defaultConfigurationLoader = c => new Serilog.LoggerConfiguration().MinimumLevel.Verbose().ReadFrom.Configuration(c).CreateLogger();
+        /// <summary>Default configuration loader function</summary>
+        public static Func<IConfiguration, ILogger> DefaultConfigurationLoader => defaultConfigurationLoader;
+
         /// <summary>
-        /// Add reload feature.
+        /// Add configuration load feature to <paramref name="builder"/>. 
+        /// 
+        /// If <paramref name="loadInitialConfiguration"/> is true, then load initial configuration <paramref name="configurationLoader"/> upon call. 
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="configuration">configuration to monitor</param>
-        /// <param name="switchableLogger">(optional) switch</param>
-        /// <param name="configurationLoader">(optional) delegate that reads configuration</param>
+        /// <param name="switchableLogger">(optional) switch instance to load new configuration to.</param>
+        /// <param name="configurationLoader">(optional) delegate that reads configuration. If not provided then uses <see cref="SerilogConfigurationLoaderExtensions.DefaultConfigurationLoader"/></param>
+        /// <param name="loadInitialConfiguration">(optional) policy whether <paramref name="configurationLoader"/> is ran at this method call</param>
         /// <returns></returns>
-        public static ILoggingBuilder AddSerilogConfigurationLoader(this ILoggingBuilder builder, IConfiguration configuration, SwitchableLogger switchableLogger = default, Func<IConfiguration, ILogger> configurationLoader = default)
+        public static ILoggingBuilder AddSerilogConfigurationLoader(this ILoggingBuilder builder, IConfiguration configuration, SwitchableLogger switchableLogger = default, Func<IConfiguration, ILogger> configurationLoader = default, bool loadInitialConfiguration = true)
         {
             // Assert argument
             if (builder == null) throw new ArgumentNullException(nameof(builder));
             // Instance switch instance
             if (switchableLogger == null) switchableLogger = new SwitchableLogger();
             // Create configure loader
-            if (configurationLoader == null) configurationLoader = c => new Serilog.LoggerConfiguration().MinimumLevel.Verbose().ReadFrom.Configuration(c).CreateLogger();
+            if (configurationLoader == null) configurationLoader = DefaultConfigurationLoader;
             // Load initial configuration
-            switchableLogger.Logger = configurationLoader(configuration);
+            if (loadInitialConfiguration) switchableLogger.Logger = configurationLoader(configuration);
             // Service collection
             IServiceCollection services = builder.Services;
             // Add switch instance as service

@@ -1,0 +1,352 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Serilog.Settings.Reloader</name>
+    </assembly>
+    <members>
+        <member name="T:Serilog.SerilogConfigurationLoaderExtensions">
+            <summary>
+            Serilog ILoggingBuilder extension methods that add reload feature
+            </summary>
+        </member>
+        <member name="F:Serilog.SerilogConfigurationLoaderExtensions.defaultConfigurationLoader">
+            <summary>Default configuration loader function</summary>
+        </member>
+        <member name="P:Serilog.SerilogConfigurationLoaderExtensions.DefaultConfigurationLoader">
+            <summary>Default configuration loader function</summary>
+        </member>
+        <member name="M:Serilog.SerilogConfigurationLoaderExtensions.AddSerilogConfigurationLoader(Microsoft.Extensions.Logging.ILoggingBuilder,Microsoft.Extensions.Configuration.IConfiguration,Serilog.SwitchableLogger,System.Func{Microsoft.Extensions.Configuration.IConfiguration,Serilog.ILogger},System.Boolean)">
+            <summary>
+            Add configuration load feature to <paramref name="builder"/>. 
+            
+            If <paramref name="loadInitialConfiguration"/> is true, then load initial configuration <paramref name="configurationLoader"/> upon call. 
+            </summary>
+            <param name="builder"></param>
+            <param name="configuration">configuration to monitor</param>
+            <param name="switchableLogger">(optional) switch instance to load new configuration to.</param>
+            <param name="configurationLoader">(optional) delegate that reads configuration. If not provided then uses <see cref="P:Serilog.SerilogConfigurationLoaderExtensions.DefaultConfigurationLoader"/></param>
+            <param name="loadInitialConfiguration">(optional) policy whether <paramref name="configurationLoader"/> is ran at this method call</param>
+            <returns></returns>
+        </member>
+        <member name="T:Serilog.SwitchableLogger">
+            <summary>
+            Switchable serilog <see cref="T:Serilog.ILogger"/>.
+            </summary>
+        </member>
+        <member name="F:Serilog.SwitchableLogger.silent">
+            <summary>Silent logger</summary>
+        </member>
+        <member name="F:Serilog.SwitchableLogger.instance">
+            <summary>Switchable logger singleton</summary>
+        </member>
+        <member name="P:Serilog.SwitchableLogger.Instance">
+            <summary>Switchable logger singleton</summary>
+        </member>
+        <member name="F:Serilog.SwitchableLogger.logger">
+            <summary>Current logger</summary>
+        </member>
+        <member name="F:Serilog.SwitchableLogger.loggerProvider">
+            <summary>Logger provider</summary>
+        </member>
+        <member name="P:Serilog.SwitchableLogger.Logger">
+            <summary>Logger</summary>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.#ctor">
+            <summary>Create switchable logger.</summary>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.#ctor(Serilog.ILogger)">
+            <summary>Create logger with initial <paramref name="logger"/>.</summary>
+            <param name="logger">(optional) initial logger</param>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.#ctor(System.Func{Serilog.ILogger})">
+            <summary>Create switchable logger.</summary>
+            <param name="loggerProvider">(optional) logger provider</param>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Set(Serilog.ILogger,System.Boolean)">
+            <summary>
+            Set <paramref name="newLogger"/> as new logger.
+            </summary>
+            <param name="newLogger"></param>
+            <param name="disposePrev"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Set(System.Func{Serilog.ILogger},System.Boolean)">
+            <summary>
+            Set <paramref name="newLoggerProvider"/> as new logger provider.
+            </summary>
+            <param name="newLoggerProvider"></param>
+            <param name="disposePrev"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.GetCurrentLogger">
+            <summary>Function that gets current logger</summary>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.ForContext(Serilog.Core.ILogEventEnricher)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.ForContext(System.Collections.Generic.IEnumerable{Serilog.Core.ILogEventEnricher})">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.ForContext(System.String,System.Object,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.ForContext``1">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.ForContext(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Write(Serilog.Events.LogEvent)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Write(Serilog.Events.LogEventLevel,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Write``1(Serilog.Events.LogEventLevel,System.String,``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Write``2(Serilog.Events.LogEventLevel,System.String,``0,``1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Write``3(Serilog.Events.LogEventLevel,System.String,``0,``1,``2)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Write(Serilog.Events.LogEventLevel,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Write(Serilog.Events.LogEventLevel,System.Exception,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Write``1(Serilog.Events.LogEventLevel,System.Exception,System.String,``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Write``2(Serilog.Events.LogEventLevel,System.Exception,System.String,``0,``1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Write``3(Serilog.Events.LogEventLevel,System.Exception,System.String,``0,``1,``2)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Write(Serilog.Events.LogEventLevel,System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.IsEnabled(Serilog.Events.LogEventLevel)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Verbose(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Verbose``1(System.String,``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Verbose``2(System.String,``0,``1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Verbose``3(System.String,``0,``1,``2)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Verbose(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Verbose(System.Exception,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Verbose``1(System.Exception,System.String,``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Verbose``2(System.Exception,System.String,``0,``1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Verbose``3(System.Exception,System.String,``0,``1,``2)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Verbose(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Debug(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Debug``1(System.String,``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Debug``2(System.String,``0,``1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Debug``3(System.String,``0,``1,``2)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Debug(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Debug(System.Exception,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Debug``1(System.Exception,System.String,``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Debug``2(System.Exception,System.String,``0,``1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Debug``3(System.Exception,System.String,``0,``1,``2)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Debug(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Information(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Information``1(System.String,``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Information``2(System.String,``0,``1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Information``3(System.String,``0,``1,``2)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Information(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Information(System.Exception,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Information``1(System.Exception,System.String,``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Information``2(System.Exception,System.String,``0,``1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Information``3(System.Exception,System.String,``0,``1,``2)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Information(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Warning(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Warning``1(System.String,``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Warning``2(System.String,``0,``1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Warning``3(System.String,``0,``1,``2)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Warning(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Warning(System.Exception,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Warning``1(System.Exception,System.String,``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Warning``2(System.Exception,System.String,``0,``1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Warning``3(System.Exception,System.String,``0,``1,``2)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Warning(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Error(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Error``1(System.String,``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Error``2(System.String,``0,``1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Error``3(System.String,``0,``1,``2)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Error(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Error(System.Exception,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Error``1(System.Exception,System.String,``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Error``2(System.Exception,System.String,``0,``1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Error``3(System.Exception,System.String,``0,``1,``2)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Error(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Fatal(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Fatal``1(System.String,``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Fatal``2(System.String,``0,``1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Fatal``3(System.String,``0,``1,``2)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Fatal(System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Fatal(System.Exception,System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Fatal``1(System.Exception,System.String,``0)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Fatal``2(System.Exception,System.String,``0,``1)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Fatal``3(System.Exception,System.String,``0,``1,``2)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Fatal(System.Exception,System.String,System.Object[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.BindMessageTemplate(System.String,System.Object[],Serilog.Events.MessageTemplate@,System.Collections.Generic.IEnumerable{Serilog.Events.LogEventProperty}@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.BindProperty(System.String,System.Object,System.Boolean,Serilog.Events.LogEventProperty@)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Dispose">
+            <summary>Dispose last attached logger</summary>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.Dispose(System.Boolean)">
+            <summary>Dispose last attached logger</summary>
+        </member>
+        <member name="T:Serilog.SwitchableLogger.LoggerDecorator">
+            <summary>Class that applies logger decorator</summary>
+        </member>
+        <member name="F:Serilog.SwitchableLogger.LoggerDecorator.loggerProvider">
+            <summary>Logger provider</summary>
+        </member>
+        <member name="F:Serilog.SwitchableLogger.LoggerDecorator.decorator">
+            <summary>Decorator function</summary>
+        </member>
+        <member name="F:Serilog.SwitchableLogger.LoggerDecorator.prevLogger">
+            <summary>Previous logger</summary>
+        </member>
+        <member name="F:Serilog.SwitchableLogger.LoggerDecorator.prevDecoratedLogger">
+            <summary><see cref="F:Serilog.SwitchableLogger.LoggerDecorator.prevLogger"/> decorated</summary>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.LoggerDecorator.#ctor(System.Func{Serilog.ILogger},System.Func{Serilog.ILogger,Serilog.ILogger})">
+            <summary>Create logger decorator</summary>
+            <param name="loggerProvider"></param>
+            <param name="decorator"></param>
+        </member>
+        <member name="M:Serilog.SwitchableLogger.LoggerDecorator.Get">
+            <summary>Get decorated logger.</summary>
+            <returns>Decorated logger</returns>
+        </member>
+    </members>
+</doc>
