@@ -27,7 +27,7 @@ namespace Serilog
         /// <summary>Logger provider</summary>
         protected Func<ILogger> loggerProvider;
         /// <summary>Logger</summary>
-        public ILogger Logger { get => logger ?? loggerProvider() ?? silent; set => Set(value); }
+        public ILogger Logger { get => logger ?? loggerProvider(); set => Set(value); }
 
         /// <summary>Create switchable logger.</summary>
         public SwitchableLogger()
@@ -38,7 +38,7 @@ namespace Serilog
         /// <param name="logger">(optional) initial logger</param>
         public SwitchableLogger(ILogger logger)
         {
-            this.logger = logger;
+            this.logger = logger ?? silent;
         }
 
         /// <summary>Create switchable logger.</summary>
@@ -58,7 +58,7 @@ namespace Serilog
         {
             if (this.logger == newLogger) return this;
             var oldLogger = this.logger;
-            this.logger = newLogger;
+            this.logger = newLogger ?? silent;
             this.loggerProvider = null;
             if (disposePrev && oldLogger is IDisposable disp) disp.Dispose();
             return this;
@@ -409,7 +409,7 @@ namespace Serilog
         /// <summary>Dispose last attached logger</summary>
         protected virtual void Dispose(bool isDisposing)
         {
-            if (isDisposing) (logger as IDisposable)?.Dispose();
+            if (isDisposing && logger is IDisposable disp) disp.Dispose();
         }
 
         /// <summary>Class that applies logger decorator</summary>
@@ -438,7 +438,7 @@ namespace Serilog
             public ILogger Get()
             {
                 // Get current logger
-                ILogger currentLogger = loggerProvider();
+                ILogger currentLogger = loggerProvider() ?? SwitchableLogger.silent;
                 // Decorate logger
                 if (currentLogger != prevLogger)
                 {
