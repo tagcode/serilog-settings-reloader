@@ -17,7 +17,7 @@ namespace Serilog
     public static class SerilogConfigurationLoaderExtensions
     {
         /// <summary>Default configuration loader function</summary>
-        static Func<IConfiguration, ILogger> defaultConfigurationLoader = c => new Serilog.LoggerConfiguration().MinimumLevel.Verbose().ReadFrom.Configuration(c).CreateLogger();
+        static Func<IConfiguration, ILogger> defaultConfigurationLoader = c => new Serilog.LoggerConfiguration().ReadFrom.Configuration(c).CreateLogger();
         /// <summary>Default configuration loader function</summary>
         public static Func<IConfiguration, ILogger> DefaultConfigurationLoader => defaultConfigurationLoader;
 
