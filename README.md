@@ -72,10 +72,11 @@ Links:
 
 <br/><br/>
 
-**.AddSerilogConfigurationLoader(<i>IConfiguration</i>, <i>SwitchableLogger</i>, <i>Func&lt;IConfiguration, ILogger&gt;</i>, <i>loadInitialConfiguration</i>)** third argument can specifies configuration load method.
+**.AddSerilogConfigurationLoader(<i>IConfiguration</i>, <i>SwitchableLogger</i>, <i>Func&lt;IConfiguration, ILogger&gt;</i>)** third argument can specifies load method.
 ```C#
                     loggingBuilder
                         .AddSerilog(SwitchableLogger.Instance, true)
-                        .AddSerilogConfigurationLoader(configuration, SwitchableLogger.Instance, c => new Serilog.LoggerConfiguration().ReadFrom.Configuration(c).CreateLogger())
+                        .AddSerilogConfigurationLoader(configuration, SwitchableLogger.Instance, 
+                                                       c => new Serilog.LoggerConfiguration().ReadFrom.Configuration(c).CreateLogger())
                     );
 ```
