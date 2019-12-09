@@ -52,12 +52,18 @@ namespace Serilog
             handleReloadContainer[0] =
                 o =>
                 {
-                    // Create new configuration
-                    ILogger newLogger = configurationLoader(configuration);
-                    // Apply configuration
-                    switchableLogger.Set(newLogger, disposePrev: true);
-                    // Monitor next change
-                    configuration.GetReloadToken().RegisterChangeCallback(handleReloadContainer[0], services);
+                    try
+                    {
+                        // Create new configuration
+                        ILogger newLogger = configurationLoader(configuration);
+                        // Apply configuration
+                        switchableLogger.Set(newLogger, disposePrev: true);
+                    }
+                    finally
+                    {
+                        // Monitor next change
+                        configuration.GetReloadToken().RegisterChangeCallback(handleReloadContainer[0], services);
+                    }
                 };
             // Monitor configuration changes
             configuration.GetReloadToken().RegisterChangeCallback(handleReloadContainer[0], services);
