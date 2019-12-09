@@ -8,75 +8,75 @@ Links:
 
 **SwitchableLogger** is assigned with new root *ILogger* when configuration is modified.
 ```C#
-            // Assign SwitchableLogger.Instance to Serilog.Log.Logger
-            Serilog.Log.Logger = SwitchableLogger.Instance;
+// Assign SwitchableLogger.Instance to Serilog.Log.Logger
+Serilog.Log.Logger = SwitchableLogger.Instance;
 
-            // Assign logger to SwitchableLogger.Instance
-            SwitchableLogger.Instance.Logger = new Serilog.LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj}{NewLine}{Exception}")
-                .CreateLogger();
+// Assign logger to SwitchableLogger.Instance
+SwitchableLogger.Instance.Logger = new Serilog.LoggerConfiguration()
+    .MinimumLevel.Verbose()
+    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj}{NewLine}{Exception}")
+    .CreateLogger();
 
-            // Create logger
-            ILogger logger = Serilog.Log.ForContext<Program>();
+// Create logger
+ILogger logger = Serilog.Log.ForContext<Program>();
 
-            // Write
-            logger.Information("Hello World");
+// Write
+logger.Information("Hello World");
 
-            // Reconfigure 
-            ILogger newLogger = new Serilog.LoggerConfiguration()
-                    .MinimumLevel.Verbose()
-                    .WriteTo.Console(outputTemplate: "[{SourceContext}] {Message:lj}{NewLine}{Exception}")
-                    .CreateLogger();
-            // Assign new logger
-            SwitchableLogger.Instance.Set(newLogger, disposePrev: true);
+// Reconfigure 
+ILogger newLogger = new Serilog.LoggerConfiguration()
+    .MinimumLevel.Verbose()
+    .WriteTo.Console(outputTemplate: "[{SourceContext}] {Message:lj}{NewLine}{Exception}")
+    .CreateLogger();
+// Assign new logger
+SwitchableLogger.Instance.Set(newLogger, disposePrev: true);
 
-            // Write with the previous logger instance, but with different settings
-            logger.Information("Hello world again");
+// Write with the previous logger instance, but with different settings
+logger.Information("Hello world again");
 ```
 
 <br/><br/>
 
 **.AddSerilogConfigurationLoader()** can be used with dependency injection's *ILoggingBuilder*.
 ```C#
-            // Read configuration
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .Add(config)
-                .Build();
+// Read configuration
+IConfigurationRoot configuration = new ConfigurationBuilder()
+    Add(config)
+    .Build();
 
-            // Service collection
-            IServiceCollection serviceCollection = new ServiceCollection()
-                .AddLogging(loggingBuilder =>
-                    loggingBuilder
-                        .AddSerilog(SwitchableLogger.Instance, true)
-                        .AddSerilogConfigurationLoader(configuration, SwitchableLogger.Instance)
-                    );
+// Service collection
+IServiceCollection serviceCollection = new ServiceCollection()
+    .AddLogging(loggingBuilder =>
+        loggingBuilder
+            .AddSerilog(SwitchableLogger.Instance, true)
+            .AddSerilogConfigurationLoader(configuration, SwitchableLogger.Instance)
+        );
 
-            // Services
-            using (var services = serviceCollection.BuildServiceProvider())
-            {
-                // Create logger
-                Microsoft.Extensions.Logging.ILogger logger = services.GetService<Microsoft.Extensions.Logging.ILogger<Program>>();
+// Services
+using (var services = serviceCollection.BuildServiceProvider())
+{
+    // Create logger
+    Microsoft.Extensions.Logging.ILogger logger = services.GetService<Microsoft.Extensions.Logging.ILogger<Program>>();
 
-                // Write
-                logger.LogInformation("Hello World");
+    // Write
+    logger.LogInformation("Hello World");
 
-                // Modify config
-                config.Set("Serilog:WriteTo:0:Args:OutputTemplate", "[{SourceContext}] {Message:lj}{NewLine}{Exception}");
-                configuration.Reload();
+    // Modify config
+    config.Set("Serilog:WriteTo:0:Args:OutputTemplate", "[{SourceContext}] {Message:lj}{NewLine}{Exception}");
+    configuration.Reload();
 
-                // Write with the previous logger instance, but with different settings
-                logger.LogInformation("Hello world again");
-            }
+    // Write with the previous logger instance, but with different settings
+    logger.LogInformation("Hello world again");
+}
 ```
 
 <br/><br/>
 
 **.AddSerilogConfigurationLoader(<i>IConfiguration</i>, <i>SwitchableLogger</i>, <i>Func&lt;IConfiguration, ILogger&gt;</i>)** third argument can specifies load method.
 ```C#
-                    loggingBuilder
-                        .AddSerilog(SwitchableLogger.Instance, true)
-                        .AddSerilogConfigurationLoader(configuration, SwitchableLogger.Instance, 
-                                                       c => new Serilog.LoggerConfiguration().ReadFrom.Configuration(c).CreateLogger())
-                    );
+loggingBuilder
+    .AddSerilog(SwitchableLogger.Instance, true)
+    .AddSerilogConfigurationLoader(configuration, SwitchableLogger.Instance, 
+        c => new Serilog.LoggerConfiguration().ReadFrom.Configuration(c).CreateLogger())
+    );
 ```
