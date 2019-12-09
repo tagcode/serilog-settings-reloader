@@ -72,7 +72,7 @@ using (var services = serviceCollection.BuildServiceProvider())
 
 <br/><br/>
 
-**.AddSerilogConfigurationLoader(<i>IConfiguration</i>, <i>SwitchableLogger</i>, <i>Func&lt;IConfiguration, ILogger&gt;</i>)** third argument can specifies load method.
+**.AddSerilogConfigurationLoader(<i>IConfiguration</i>, <i>SwitchableLogger</i>, <i>Func&lt;IConfiguration, ILogger&gt;</i>)** third argument specifies load function.
 ```C#
 loggingBuilder
     .AddSerilog(SwitchableLogger.Instance, true)
