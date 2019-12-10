@@ -27,7 +27,28 @@ namespace Serilog
         /// <summary>Logger provider</summary>
         protected Func<ILogger> loggerProvider;
         /// <summary>Logger</summary>
-        public ILogger Logger { get => logger ?? loggerProvider(); set => Set(value); }
+        public ILogger Logger {
+            get
+            {
+                // Get logger reference
+                var _logger = logger;
+                // Got value
+                if (_logger != null) return _logger;
+                // Get provider reference
+                var _loggerProvider = loggerProvider;
+                // Not null
+                if (_loggerProvider != null)
+                {
+                    // Get logger reference
+                    _logger = _loggerProvider();
+                    // Got value
+                    if (_logger != null) return _logger;
+                }
+                // Fallback instance (never returns null)
+                return silent;
+            }
+            set => Set(value); 
+        }
 
         /// <summary>Create switchable logger.</summary>
         public SwitchableLogger()
@@ -46,6 +67,7 @@ namespace Serilog
         public SwitchableLogger(Func<ILogger> loggerProvider)
         {
             this.loggerProvider = loggerProvider;
+            if (loggerProvider == null) this.logger = silent;
         }
 
         /// <summary>
@@ -73,16 +95,42 @@ namespace Serilog
         public SwitchableLogger Set(Func<ILogger> newLoggerProvider, bool disposePrev = false)
         {
             var oldLogger = this.logger;
-            this.logger = null;
-            this.loggerProvider = newLoggerProvider;
+            if (newLoggerProvider == null)
+            {
+                this.logger = silent;
+                this.loggerProvider = null;
+            }
+            else
+            {
+                this.loggerProvider = newLoggerProvider;
+                this.logger = null;
+            }
             if (disposePrev && oldLogger is IDisposable disp) disp.Dispose();
             return this;
         }
 
         /// <summary>Function that gets current logger</summary>
+        /// <returns>Logger</returns>
         public ILogger GetCurrentLogger()
-            => logger ?? loggerProvider() ?? silent;
-
+        {
+            // Get logger reference
+            var _logger = logger;
+            // Got value
+            if (_logger != null) return _logger;
+            // Get provider reference
+            var _loggerProvider = loggerProvider;
+            // Not null
+            if (_loggerProvider != null)
+            {
+                // Get logger reference
+                _logger = _loggerProvider();
+                // Got value
+                if (_logger != null) return _logger;
+            }
+            // Fallback instance (never returns null)
+            return silent;
+        }
+        
         /// <inheritdoc/>
         public ILogger ForContext(ILogEventEnricher enricher)
             => enricher == null ? this : new SwitchableLogger(new LoggerDecorator(GetCurrentLogger, l => l.ForContext(enricher)).Get);

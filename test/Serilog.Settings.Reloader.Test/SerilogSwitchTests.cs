@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Serilog.Events;
 using System;
+using System.Threading.Tasks;
 
 namespace Serilog.Settings.Reloader.Test
 {
@@ -11,74 +12,29 @@ namespace Serilog.Settings.Reloader.Test
     public class SerilogSwitchTests
     {
         [TestMethod]
-        public void Test1()
+        public void ConcurrencyTest()
         {
-
-        }
-
-        [TestMethod]
-        public void ReloadErroneousConfigurationTest()
-        {
-            // Initial configuration
-            MemoryConfiguration config = new MemoryConfiguration()
-                .Set("Serilog:WriteTo:0:Name", "Console")
-                .Set("Serilog:WriteTo:0:Args:OutputTemplate", "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj}{NewLine}{Exception}")
-                .Set("Serilog:MinimumLevel", "Information");
-
-            // Read configuration
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .Add(config)
-                .Build();
-
-            // Service collection
-            IServiceCollection serviceCollection = new ServiceCollection()
-                .AddLogging(loggingBuilder =>
-                    loggingBuilder
-                        .AddSerilog(SwitchableLogger.Instance, true)
-                        .AddSerilogConfigurationLoader(configuration, SwitchableLogger.Instance)
-                        .SetMinimumLevel(LogLevel.Trace)
-                    );
-
-            // Services
-            using (var services = serviceCollection.BuildServiceProvider())
+            Parallel.For(0, 8, t =>
             {
-                // Create logger
-                Microsoft.Extensions.Logging.ILogger logger = services.GetService<Microsoft.Extensions.Logging.ILogger<SerilogSwitchTests>>();
-
-                // Assert levels
-                Assert.IsTrue(SwitchableLogger.Instance.IsEnabled(LogEventLevel.Information));
-                Assert.IsFalse(SwitchableLogger.Instance.IsEnabled(LogEventLevel.Debug));
-
-                // Write
-                logger.LogInformation("Hello World");
-
-                // Modify erroneus config
-                config.Set("Serilog:MinimumLevel", "Blaa");
-                try
+                Random r = new Random();
+                for (int i=0; i<5000000; i++)
                 {
-                    configuration.Reload();
-                    Assert.Fail("Expected load error");
+                    ILogger l = new LoggerConfiguration().MinimumLevel.Is((LogEventLevel)r.Next(0, 6)).CreateLogger();
+                    if (r.Next(0, 2) == 0) SwitchableLogger.Instance.Set(l); else SwitchableLogger.Instance.Set(()=>l);
+                    SwitchableLogger.Instance.IsEnabled((LogEventLevel)r.Next(0, 6));
+                    switch(r.Next(0, 6))
+                    {
+                        case 0:SwitchableLogger.Instance.Verbose("x"); break;
+                        case 1:SwitchableLogger.Instance.Debug("x"); break;
+                        case 2:SwitchableLogger.Instance.Information("x"); break;
+                        case 3:SwitchableLogger.Instance.Warning("x"); break; 
+                        case 4:SwitchableLogger.Instance.Error("x"); break;
+                        case 5:SwitchableLogger.Instance.Fatal("x"); break;
+                    }                    
                 }
-                catch (Exception) { 
-                    // Expected
-                }
-                // Assert debug is information retains
-                Assert.IsTrue(SwitchableLogger.Instance.IsEnabled(LogEventLevel.Information));
-                Assert.IsFalse(SwitchableLogger.Instance.IsEnabled(LogEventLevel.Debug));
-
-                // Write with the previous logger instance, but with different settings
-                logger.LogInformation("Hello world again");
-
-                // Modify ok config
-                config.Set("Serilog:MinimumLevel", "Debug");
-                configuration.Reload();
-
-                // Assert debug is applied
-                Assert.IsTrue(SwitchableLogger.Instance.IsEnabled(LogEventLevel.Information));
-                Assert.IsTrue(SwitchableLogger.Instance.IsEnabled(LogEventLevel.Debug));
-
-            }
+            });
         }
+
 
     }
 }

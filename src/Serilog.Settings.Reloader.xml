@@ -80,6 +80,7 @@
         </member>
         <member name="M:Serilog.SwitchableLogger.GetCurrentLogger">
             <summary>Function that gets current logger</summary>
+            <returns>Logger</returns>
         </member>
         <member name="M:Serilog.SwitchableLogger.ForContext(Serilog.Core.ILogEventEnricher)">
             <inheritdoc/>
