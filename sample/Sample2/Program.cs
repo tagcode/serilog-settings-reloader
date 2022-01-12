@@ -9,6 +9,9 @@ namespace Sample
     {
         public static void Main(string[] args)
         {
+            // Create switchable logger
+            SwitchableLogger switchableLogger = new SwitchableLogger();
+
             // Initial configuration
             MemoryConfiguration config = new MemoryConfiguration()
                 .Set("Serilog:WriteTo:0:Name", "Console")
@@ -24,8 +27,8 @@ namespace Sample
             IServiceCollection serviceCollection = new ServiceCollection()
                 .AddLogging(loggingBuilder =>
                     loggingBuilder
-                        .AddSerilog(SwitchableLogger.Instance, true)
-                        .AddSerilogConfigurationLoader(configuration, SwitchableLogger.Instance)
+                        .AddSerilog(switchableLogger, true)
+                        .AddSerilogConfigurationLoader(configuration, switchableLogger)
                     );
 
             // Services

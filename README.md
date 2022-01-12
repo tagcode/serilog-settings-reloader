@@ -8,14 +8,16 @@ Links:
 
 **SwitchableLogger** is assigned with new root *ILogger* when configuration is modified.
 ```C#
-// Assign SwitchableLogger.Instance to Serilog.Log.Logger
-Serilog.Log.Logger = SwitchableLogger.Instance;
+// Create switchable
+SwitchableLogger switchableLogger = new SwitchableLogger();
+// Assign SwitchableLogger to Serilog.Log.Logger
+Serilog.Log.Logger = switchableLogger;
 
-// Assign logger to SwitchableLogger.Instance
-SwitchableLogger.Instance.Logger = new Serilog.LoggerConfiguration()
-    .MinimumLevel.Verbose()
-    .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj}{NewLine}{Exception}")
-    .CreateLogger();
+// Assign logger to switchableLogger
+switchableLogger.Logger = new Serilog.LoggerConfiguration()
+        .MinimumLevel.Verbose()
+        .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj}{NewLine}{Exception}")
+        .CreateLogger();
 
 // Create logger
 ILogger logger = Serilog.Log.ForContext<Program>();
@@ -25,11 +27,11 @@ logger.Information("Hello World");
 
 // Reconfigure 
 ILogger newLogger = new Serilog.LoggerConfiguration()
-    .MinimumLevel.Verbose()
-    .WriteTo.Console(outputTemplate: "[{SourceContext}] {Message:lj}{NewLine}{Exception}")
-    .CreateLogger();
+        .MinimumLevel.Verbose()
+        .WriteTo.Console(outputTemplate: "[{SourceContext}] {Message:lj}{NewLine}{Exception}")
+        .CreateLogger();
 // Assign new logger
-SwitchableLogger.Instance.Set(newLogger, disposePrev: true);
+switchableLogger.Set(newLogger, disposePrev: true);
 
 // Write with the previous logger instance, but with different settings
 logger.Information("Hello world again");
@@ -39,6 +41,9 @@ logger.Information("Hello world again");
 
 **.AddSerilogConfigurationLoader()** can be used with dependency injection's *ILoggingBuilder*.
 ```C#
+// Create switchable logger
+SwitchableLogger switchableLogger = new SwitchableLogger();
+
 // Read configuration
 IConfigurationRoot configuration = new ConfigurationBuilder()
     Add(config)
@@ -48,8 +53,8 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
 IServiceCollection serviceCollection = new ServiceCollection()
     .AddLogging(loggingBuilder =>
         loggingBuilder
-            .AddSerilog(SwitchableLogger.Instance, true)
-            .AddSerilogConfigurationLoader(configuration, SwitchableLogger.Instance)
+            .AddSerilog(switchableLogger, true)
+            .AddSerilogConfigurationLoader(configuration, switchableLogger)
         );
 
 // Services
@@ -75,8 +80,8 @@ using (var services = serviceCollection.BuildServiceProvider())
 **.AddSerilogConfigurationLoader(<i>IConfiguration</i>, <i>SwitchableLogger</i>, <i>Func&lt;IConfiguration, ILogger&gt;</i>)** third argument specifies load function.
 ```C#
 loggingBuilder
-    .AddSerilog(SwitchableLogger.Instance, true)
-    .AddSerilogConfigurationLoader(configuration, SwitchableLogger.Instance, 
+    .AddSerilog(switchableLogger, true)
+    .AddSerilogConfigurationLoader(configuration, switchableLogger, 
         c => new Serilog.LoggerConfiguration().ReadFrom.Configuration(c).CreateLogger())
     );
 ```

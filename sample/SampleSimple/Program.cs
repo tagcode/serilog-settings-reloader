@@ -6,11 +6,13 @@ namespace SampleSimple
     {
         static void Main(string[] args)
         {
-            // Assign SwitchableLogger.Instance to Serilog.Log.Logger
-            Serilog.Log.Logger = SwitchableLogger.Instance;
+            // Create switchable
+            SwitchableLogger switchableLogger = new SwitchableLogger();
+            // Assign SwitchableLogger to Serilog.Log.Logger
+            Serilog.Log.Logger = switchableLogger;
 
-            // Assign logger to SwitchableLogger.Instance
-            SwitchableLogger.Instance.Logger = new Serilog.LoggerConfiguration()
+            // Assign logger to switchableLogger
+            switchableLogger.Logger = new Serilog.LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3} {SourceContext}] {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
@@ -27,7 +29,7 @@ namespace SampleSimple
                     .WriteTo.Console(outputTemplate: "[{SourceContext}] {Message:lj}{NewLine}{Exception}")
                     .CreateLogger();
             // Assign new logger
-            SwitchableLogger.Instance.Set(newLogger, disposePrev: true);
+            switchableLogger.Set(newLogger, disposePrev: true);
 
             // Write with the previous logger instance, but with different settings
             logger.Information("Hello world again");
