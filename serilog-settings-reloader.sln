@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29519.181
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serilog.Settings.Reloader", "src\Serilog.Settings.Reloader.csproj", "{64110E8A-0279-405D-AB83-383011AAEA29}"
 EndProject
@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "assets", "assets", "{0D50A248-F5B7-4018-AEB2-1ED359BB5988}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE = LICENSE
+		nuget.txt = nuget.txt
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -23,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{472C46
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleSimple", "sample\SampleSimple\SampleSimple.csproj", "{E1785433-F471-4623-933E-C990198DB7CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample2", "sample\Sample2\Sample2.csproj", "{AE49C70E-4B7D-476F-96EC-C492D183DD2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample2", "sample\Sample2\Sample2.csproj", "{AE49C70E-4B7D-476F-96EC-C492D183DD2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
