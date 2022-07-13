@@ -80,6 +80,7 @@ using (var services = serviceCollection.BuildServiceProvider())
 **.AddSerilogConfigurationLoader(<i>IConfiguration</i>, <i>SwitchableLogger</i>, <i>Func&lt;IConfiguration, ILogger&gt;</i>)** third argument specifies load function.
 ```C#
 loggingBuilder
+    .ClearProviders()
     .AddSerilog(switchableLogger, true)
     .AddSerilogConfigurationLoader(configuration, switchableLogger, 
         c => new Serilog.LoggerConfiguration().ReadFrom.Configuration(c).CreateLogger())
