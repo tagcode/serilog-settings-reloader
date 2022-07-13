@@ -41,9 +41,6 @@ logger.Information("Hello world again");
 
 **.AddSerilogConfigurationLoader()** can be used with dependency injection's *ILoggingBuilder*.
 ```C#
-// Create switchable logger
-SwitchableLogger switchableLogger = new SwitchableLogger();
-
 // Read configuration
 IConfigurationRoot configuration = new ConfigurationBuilder()
     Add(config)
@@ -52,10 +49,13 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
 // Service collection
 IServiceCollection serviceCollection = new ServiceCollection()
     .AddLogging(loggingBuilder =>
-        loggingBuilder
-            .AddSerilog(switchableLogger, true)
-            .AddSerilogConfigurationLoader(configuration, switchableLogger)
-        );
+        {
+            SwitchableLogger switchableLogger = new SwitchableLogger();
+            loggingBuilder
+                .ClearProviders()
+                .AddSerilog(switchableLogger, true)
+                .AddSerilogConfigurationLoader(configuration, switchableLogger);
+        });
 
 // Services
 using (var services = serviceCollection.BuildServiceProvider())
